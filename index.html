@@ -89,11 +89,20 @@
 
 <!-- 자바 스크립트 코드 -->
  <script>
-    document.querySelector("#like-icon").addEventListener("click", function() {
-    console.log("좋아요 아이콜 클릭")
-    document.querySelector("#like-icon").textContent = "🧡"
-    document.querySelector("#count").textContent = +1
-})
+    const icon = document.querySelector("#like-icon")
+    const count = document.querySelector("#count")
+    
+    icon.addEventListener("click", function(){
+      if(icon.textContent == "🤍")
+    {icon.textContent ="🧡"
+      count.textContent = Number(count.textContent + 1)
+    }
+    else {icon.textContent = "🤍"
+      count.textContent = Number(count.textContent - 1)}
+
+  })
+    
+  
     document.querySelector("#backjihun").addEventListener("click", function(){
         document.querySelector("#modal").style.display = "block"
     })
