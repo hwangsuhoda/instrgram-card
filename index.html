@@ -51,7 +51,29 @@
         background: rgba(0, 0, 0, 0.7); /* 불투명한 어두운 배경 */
         text-align: center; /* 이미지 가운데 배치 */
         display: none; /* 화면에서 안 보이도록 */
+    
     }
+    .reply-area {
+    display: flex; /* textarea와 button 한 줄에 수평 배치*/
+    align-items: center; /* textarea와 button을 세로 기준 가운데 정렬 */
+    padding-bottom: 4px; /* 안쪽-아래 여백 */
+    border-bottom: 1px solid #ccc; /* 아래쪽 테두리 추가 */
+}
+.reply-textarea {
+    flex: 1; /* 가로크기 버튼 제외 꽉 채우게 */
+    height: 18px; /* 기본 세로 크기 */
+    max-height: 80px; /* 최대 세로 크기 */
+    outline: none; /* 포커스 됐을 때의 테두리 없애기 */
+    border: none; /* 기본 테두리 없애기 */
+    resize: none; /* 사용자가 조절하지 못하도록 막음 */
+}
+.add-reply-button {
+    outline: none; /* 포커스 됐을 때의 테두리 없애기 */
+    border: none; /* 기본 테두리 없애기 */
+    background: none; /* 배경색 없애기 */
+    color: #3143e3;
+    cursor: pointer; /* 커서 손가락 모양으로 변경 */
+}
   </style>
 </head>
 <body>
@@ -78,6 +100,12 @@
 
     <!-- 내용 -->
     <p class="caption">너무 피곤해</p>
+    <div class="reply-area">
+        <textarea id="reply-textarea" class="reply-textarea" placeholder="댓글 달기..."></textarea>
+        <button id="add-reply-button" class="add-reply-button">게시</button>
+     </div>
+
+      <ul id ="reply-list" class="reply-List"></ul>
   </div>
 
   <div id="modal" class="modal">
@@ -91,7 +119,14 @@
  <script>
     const icon = document.querySelector("#like-icon")
     const count = document.querySelector("#count")
+    const replyArea = document.querySelector("#reply-textarea")
+    const addReplyButton = document.querySelector("#add-reply-button")
+    const replyList = document.querySelector("#reply-list")
+    const modal = document.querySelector("#modal")
     
+   
+   
+   
     icon.addEventListener("click", function(){
       if(icon.textContent == "🤍")
     {icon.textContent ="🧡"
@@ -102,6 +137,33 @@
 
   })
     
+  addReplyButton.addEventListener("click", function() {
+    const replyTextValue = replyArea.value
+    if(replyTextValue.trim() === "") {
+        alert("내용을 입력해주세요")
+        return
+    }
+    // 1. li 요소 생성
+    const newReply = document.createElement("li")
+    // 5. button 요소 생성
+    const newDeleteButton = document.createElement("button")
+    // 2. 생성한 li 요소에 내용(입력창 값)을 추가
+    newReply.textContent = replyArea.value
+    // 2-2 button의 내용 추가
+    newDeleteButton.textContent = "❌"
+    // 2-3 button에 이밴트 추가
+    newDeleteButton.addEventListener("click", function() {
+        // 댓글 삭제
+
+        newReply.remove()
+    })
+    newReply.appendChild(newDeleteButton)
+    replyList.appendChild(newReply)
+    // 3. 부모 요소 ul의 자식요소로 위에 생성한 li를 추가
+    replyList.appendChild(newReply)
+    // 4. 입력값 초기화
+    replyArea.value=""
+  })
   
     document.querySelector("#backjihun").addEventListener("click", function(){
         document.querySelector("#modal").style.display = "block"
